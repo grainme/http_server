@@ -1,0 +1,12 @@
+# .gitignore
+target/
+**/*.rs.bk
+.DS_Store
+
+# .gitattributes
+* text=auto
+*.rs text eol=lf
+*.py text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.toml text eol=lf
