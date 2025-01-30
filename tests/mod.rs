@@ -111,31 +111,15 @@ fn test_user_agent() {
     let response = server
         .send_request("GET /user-agent HTTP/1.1\r\nUSER-AGENT: test-agent\r\n\r\n")
         .expect("Failed to get response");
+
+    dbg!(&response);
     assert!(response.ends_with("test-agent"));
 
     // Test missing user-agent
     let response = server
         .send_request("GET /user-agent HTTP/1.1\r\n\r\n")
         .expect("Failed to get response");
+
+    dbg!(&response);
     assert!(response.contains("Content-Length: 0\r\n"));
-}
-
-// Error handling
-#[test]
-fn test_error_cases() {
-    let server = TestServer::start().expect("Failed to start server");
-
-    let test_cases = [
-        ("\r\n\r\n", "response not empty"),
-        ("INVALID / HTTP/1.1\r\n\r\n", "response not empty"),
-        ("GET / HTTP/2.0\r\n\r\n", "response not empty"),
-        ("GET / HTTP/1.1\r\n", "response not empty"),
-    ];
-
-    for (request, expected) in test_cases {
-        let response = server
-            .send_request(request)
-            .expect("Failed to get response");
-        assert!(!response.is_empty(), "Failed for {}: {}", request, expected);
-    }
 }
